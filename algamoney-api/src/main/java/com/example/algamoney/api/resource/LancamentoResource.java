@@ -41,6 +41,7 @@ public class LancamentoResource {
 	@Autowired
 	private MessageSource messageSource;	
 	
+	@Autowired
 	private LancamentoService lancamentoService;
 
 	@GetMapping
