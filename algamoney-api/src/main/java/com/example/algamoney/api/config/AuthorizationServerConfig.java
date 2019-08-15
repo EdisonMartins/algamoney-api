@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,17 +22,19 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter  {
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	@Autowired
-	private CorsFilter corsFilter;
-	
+
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 			.withClient("angular")
-			.secret("@ngul@r0")
+			.secret("$2a$10$gY96zbUSj.nUmJfwTX2a7O6NO0TcJ/Me/BAogErwUkzi3c1FsNNJe")
 			.scopes("read", "write")
 			.authorizedGrantTypes("password", "refresh_token")
 			.accessTokenValiditySeconds(20)
@@ -41,17 +44,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		security.addTokenEndpointAuthenticationFilter(corsFilter);
+		security.addTokenEndpointAuthenticationFilter(this.corsFilter());
 	}
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints
-			.tokenStore(tokenStore())
-			.accessTokenConverter(accessTokenConverter())
-			.reuseRefreshTokens(false)
-			.authenticationManager(authenticationManager);
-	}
+	    endpoints
+	        .tokenStore(tokenStore())
+	        .accessTokenConverter(this.accessTokenConverter())
+	        .reuseRefreshTokens(false)
+	        .userDetailsService(this.userDetailsService)
+	        .authenticationManager(this.authenticationManager);
+	}	
+	
 	
 	@Bean
 	public TokenStore tokenStore() {

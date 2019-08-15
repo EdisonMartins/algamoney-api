@@ -1,32 +1,31 @@
 package com.example.algamoney.api.config;
 
-import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-@EnableWebSecurity
+@Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	// admin em base64 --> YWRtaW4=
 	// Basic <usuario>:<senha>
 	// Basic admin:admin
 	// Basic YWRtaW46YWRtaW4=
+	
+	/*
+	 * Não é mais necessário
+	 * @Autowired private UserDetailsService userDetailsService;
+	 */
 
-	@Autowired
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ROLE");
-	}
+// Não é mais necessário
+//	@Autowired
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		// auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ROLE");
+//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//	}
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
@@ -43,6 +42,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		resources.stateless(true);
 	}
 
+//	Não é mais necessário
+//	@Bean 
+//	public PasswordEncoder passwordEncoder() {
+//		return new BCryptPasswordEncoder();
+//	}
 
 
 }
