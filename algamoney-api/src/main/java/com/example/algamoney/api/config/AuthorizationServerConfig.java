@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
+
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter  {
@@ -28,6 +30,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private AlgamoneyApiProperty algamoneyApiProperty; 
 	
 
 	@Override
@@ -84,7 +89,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.setMaxAge(3600L);
-		config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8000"));
+		config.setAllowedOrigins(Arrays.asList(algamoneyApiProperty.getOriginPermitida(), "http://localhost:8000"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
