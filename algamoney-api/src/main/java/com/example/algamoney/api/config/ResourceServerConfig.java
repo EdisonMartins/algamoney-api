@@ -2,6 +2,7 @@ package com.example.algamoney.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,27 +12,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
+@Profile("oauth-security")
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-	// admin em base64 --> YWRtaW4=
-	// Basic <usuario>:<senha>
-	// Basic admin:admin
-	// Basic YWRtaW46YWRtaW4=
 	
-	/*
-	 * Não é mais necessário
-	 * @Autowired private UserDetailsService userDetailsService;
-	 */
-
-// Não é mais necessário
-//	@Autowired
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		// auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ROLE");
-//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//	}
-
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.cors().and()
@@ -51,12 +37,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public MethodSecurityExpressionHandler createExpressionHandler() {
 		return new OAuth2MethodSecurityExpressionHandler();
 	}	
-
-//	Não é mais necessário
-//	@Bean 
-//	public PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
-
 
 }
