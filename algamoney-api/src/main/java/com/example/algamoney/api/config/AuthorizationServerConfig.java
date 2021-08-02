@@ -92,7 +92,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.setMaxAge(3600L);
-		config.setAllowedOrigins(Arrays.asList(algamoneyApiProperty.getOriginPermitida(), "http://localhost:8000"));
+		config.setAllowedOrigins(Arrays.asList(algamoneyApiProperty.getOriginPermitida(), "http://localhost:4200"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
